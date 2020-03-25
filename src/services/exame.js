@@ -1,0 +1,20 @@
+import { http } from './config'
+
+export default {
+    listar:() => {
+        return http.get('exames')
+    },
+
+    salvar:(exame) => {
+        return http.post('exames', exame )
+    },
+
+    atualizar:(exame) => {
+        return http.put('exames', exame)
+    },
+
+    apagar:(exame) => {
+        return http.delete('exames', { data: exame })
+    }
+
+}
