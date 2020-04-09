@@ -56,6 +56,20 @@
     </b-form-group>
 
     <b-form-group
+      id="input-group-p12"
+      label="Peso:"
+      label-for="input-p12"
+    >
+      <b-form-input
+        id="input-p12"
+        v-model="weight"
+        type="number"
+        required
+        placeholder="Digite seu peso"
+      />
+    </b-form-group>
+
+    <b-form-group
       id="input-group-1"
       label="Email:"
       label-for="input-1"
@@ -116,6 +130,7 @@
 <script>
 // @ is an alias to /src
 import BaseLayout from '@/components/BaseLayoutLogin.vue';
+import Usuario from '../services/usuario';
 
 export default {
   name: 'Historico',
@@ -128,11 +143,31 @@ export default {
     genre: 'M',
     username: '',
     password: '',
+    weight: '',
     passwordConfirm: '',
   }),
   methods: {
     onSubmit(evt) {
       console.log('Evt:Register');
+      this.salvarCadastro();
+    },
+
+    salvarCadastro() {
+      const body = {
+        nome: this.fullname,
+        idade: this.age,
+        senha: this.password,
+        sexo: this.genre,
+        login: this.username,
+        peso: this.weight
+      };
+      Usuario.cadastrar(body).then(resposta => {
+        alert(resposta.data);
+        this.errors = [];
+        this.$router.push({ name: 'login' });
+      }).catch(e => {
+        this.errors = e.response.data.errors;
+      });
     }
   }
 };

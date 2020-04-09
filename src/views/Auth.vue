@@ -48,6 +48,7 @@
 <script>
 // @ is an alias to /src
 import BaseLayout from '@/components/BaseLayoutLogin.vue';
+import LoginUsuario from '../services/usuario';
 
 export default {
   name: 'Historico',
@@ -68,8 +69,23 @@ export default {
   methods: {
     onSubmit(evt) {
       console.log('Evt:Login');
-      localStorage.setItem('jwt', this.username);
-      this.$router.push({ name: 'home' });
+      this.realizarLogin();
+    },
+    realizarLogin() {
+      const body = {
+        usuario: this.username,
+        senha: this.password
+      };
+      LoginUsuario.login(body).then(resposta => {
+        const jwt = resposta.data;
+        if (jwt) {
+          localStorage.setItem('jwt', jwt);
+          this.$router.push({ name: 'home' });
+        }
+      }).catch(e => {
+        console.log('error ', e.response.data);
+        this.errors = e.response.data.errors;
+      });
     }
   }
 };
