@@ -2,7 +2,7 @@ import { http } from './config';
 
 export default {
   listar: () => {
-    return http.get('medicamento/');
+    return http.get('medicamentoUsuario/');
   },
 
   salvar: (medicamento) => {

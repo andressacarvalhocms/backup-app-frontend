@@ -2,7 +2,7 @@ import { http } from './config';
 
 export default {
   listar: () => {
-    return http.get('exames');
+    return http.get('examesUsuario');
   },
 
   salvar: (exame) => {
