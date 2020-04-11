@@ -14,8 +14,8 @@
     </BaseContentTitle>
 
     <div class="table-responsive">
-      
-      
+
+
     <table class="table striped">
       <thead class="thead-light">
         <tr >
@@ -41,7 +41,7 @@
               >
                 <i class='fas fa-pen'></i>
               </b-button>
-              
+
               <b-button
                 size="sm"
                 variant="outline-secondary"
@@ -54,7 +54,7 @@
       </tbody>
 </table>
 
-       
+
 
 
     </div>
@@ -176,10 +176,10 @@
             type="number"
             required
           />
-        </b-form-group>      
+        </b-form-group>
 
         <button type="submit" class="btn btn-primary" style="margin: 0 15px;"> Confirmar</button>
-        
+
         <button type="reset" class="btn btn-danger" onClick="window.location.reload()"> Cancelar</button>
 
 
@@ -225,7 +225,7 @@ export default {
          },
          medicamentos: [],
 
-    
+
     fields: [
         {
           key: 'nome',
@@ -259,7 +259,6 @@ export default {
   methods: {
     listar(){
       Medicamento.listar().then(resposta => {
-          console.log(resposta.data)
           this.medicamentos = resposta.data
         })
     },
@@ -291,7 +290,7 @@ export default {
 
     editar(medicamento){
       this.medicamento = medicamento
-    }, 
+    },
 
     remover(medicamento){
       if(confirm('Deseja excluir o medicamento?')){
@@ -301,7 +300,7 @@ export default {
         }).catch(e => {
           this.errors = e.response.data.errors
         })
-      }  
+      }
     },
 
     checkFormValidity() {

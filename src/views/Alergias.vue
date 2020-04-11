@@ -14,8 +14,8 @@
     </BaseContentTitle>
 
     <div class="table-responsive">
-      
-      
+
+
     <table class="table striped">
       <thead class="thead-light">
         <tr >
@@ -39,7 +39,7 @@
               >
                 <i class='fas fa-pen'></i>
               </b-button>
-              
+
               <b-button
                 size="sm"
                 variant="outline-secondary"
@@ -52,7 +52,7 @@
       </tbody>
 </table>
 
-      
+
     </div>
 
     <b-modal
@@ -73,10 +73,10 @@
           label-for="inp-nome"
           invalid-feedback="Nome é obrigatório"
         >
-          
+
       <input type="text" placeholder="Nome"  id="inp-nome"
             v-model="alergia.nome"
-            required class="form-control"> 
+            required class="form-control">
         </b-form-group>
 
         <b-form-group
@@ -84,21 +84,21 @@
           label-for="inp-gravidade"
           invalid-feedback="Nome é obrigatório"
         >
-          
+
       <input type="text" placeholder="Gravidade"  id="inp-gravidade"
             v-model="alergia.gravidade"
-            required class="form-control"> 
+            required class="form-control">
         </b-form-group>
-      
-      
+
+
         <button type="submit" class="btn btn-primary" style="margin: 0 15px;"> Confirmar</button>
-        
+
         <button type="reset" class="btn btn-danger" onClick="window.location.reload()"> Cancelar</button>
 
 
       </form>
 
-      
+
     </b-modal>
   </BaseLayout>
 </template>
@@ -121,7 +121,7 @@ export default {
   },
   data() {
     return {
-      
+
          alergia:{
           id: '',
           nome: '',
@@ -130,7 +130,7 @@ export default {
          },
          alergias: [],
 
- 
+
       fields: [
         {
           key: 'nome',
@@ -154,12 +154,11 @@ export default {
   methods: {
     listar(){
       Alergia.listar().then(resposta => {
-          console.log(resposta.data)
           this.alergias = resposta.data
         })
     },
 
-    
+
     salvar(){
 
       if (!this.alergia.id){
@@ -187,7 +186,7 @@ export default {
 
     editar(alergia){
       this.alergia = alergia
-    }, 
+    },
 
     remover(alergia){
       if(confirm('Deseja excluir a alergia?')){
@@ -197,7 +196,7 @@ export default {
         }).catch(e => {
           this.errors = e.response.data.errors
         })
-      }  
+      }
     },
 
 

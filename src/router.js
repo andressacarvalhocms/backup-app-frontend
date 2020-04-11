@@ -74,15 +74,15 @@ const router = new Router({
       component: Register
     },
     {
-        path: '/monitoramento',
-        name: 'monitoramento',
-        component: Monitoramento
-      },
-      {
-          path: '/classificacao',
-          name: 'classificacao',
-          component: Classificacao
-        }
+      path: '/monitoramento',
+      name: 'monitoramento',
+      component: Monitoramento
+    },
+    {
+      path: '/classificacao',
+      name: 'classificacao',
+      component: Classificacao
+    }
   ]
 });
 

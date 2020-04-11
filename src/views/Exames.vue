@@ -41,7 +41,7 @@
               >
                 <i class='fas fa-pen'></i>
               </b-button>
-              
+
               <b-button
                 size="sm"
                 variant="outline-secondary"
@@ -54,7 +54,7 @@
       </tbody>
 </table>
 
-      
+
     </div>
 
     <b-modal
@@ -65,7 +65,7 @@
       @show="resetModal"
       @ok="handleSave"
     >
-          <form 
+          <form
         ref="form"
         @submit.prevent="salvar"
           >
@@ -96,10 +96,10 @@
           :label="'Valor (' + form.und_medida + ')'"
           label-for="inp-valor"
         >
-        
+
       <input type="text" placeholder="Resultado"  id="inp-valor"
             v-model="exame.resultado"
-            required class="form-control"> 
+            required class="form-control">
         </b-form-group>
 
 
@@ -107,20 +107,20 @@
           :label="'Data do Exame'"
           label-for="inp-dataCadastro"
         >
-        
+
       <input type="date" placeholder="Resultado"  id="inp-dataCadastro"
             v-model="exame.dataCadastro"
             required class="form-control">
         </b-form-group>
-      
+
         <button type="submit" class="btn btn-primary" style="margin: 0 15px;"> Confirmar</button>
-        
+
         <button type="reset" class="btn btn-danger" onClick="window.location.reload()"> Cancelar</button>
 
 
       </form>
 
-      
+
 
     </b-modal>
   </BaseLayout>
@@ -136,7 +136,7 @@ import BaseContentTitle from '@/components/BaseContentTitle.vue';
 
 
 export default {
- 
+
   mounted(){
     this.listar()
   },
@@ -148,14 +148,13 @@ name: 'Exames',
   },
   data() {
     return {
-
-         exame:{
-          id: '',
-          nome: '',
-           resultado: '',
-           dataCadastro:  ''
-         },
-         exames: [],
+      exame: {
+        id: '',
+        nome: '',
+        esultado: '',
+        dataCadastro: ''
+      },
+      exames: [],
 
   /*    fields: [
         {
@@ -174,7 +173,7 @@ name: 'Exames',
       ],
       items: [
         { nome: 'Presssão Arterial', valor: '120/80 mmHg', data_cadastro: '03/04/2019' }
-        
+
       ], */
       form: {
         exame: null,
@@ -197,51 +196,48 @@ name: 'Exames',
     };
   },
   methods: {
-    listar(){
-      Exame.listar().then(resposta => {
-          console.log(resposta.data)
-          this.exames = resposta.data
-        })
+    listar() {
+      Exame.listar().then(resposta => this.exames = resposta.data);
     },
 
-    salvar(){
+    salvar() {
 
-      if (!this.exame.id){
-          Exame.salvar(this.exame).then(resposta => {
-            this.exame = {}
-            alert('Salvo com sucesso!')
-            window.location.reload();
-            this.listar()
-            this.errors = []
-          }).catch(e => {
-            this.errors = e.response.data.errors
-          })
-      }else{
-          Exame.salvar(this.exame).then(resposta => {
-            this.exame = {}
-            alert('Atualizado com sucesso!')
-            window.location.reload();
-            this.listar()
-            this.errors = []
-          }).catch(e => {
-            this.errors = e.response.data.errors
-          })
-      }
-    },
-
-    editar(exame){
-      this.exame = exame
-    }, 
-
-    remover(exame){
-      if(confirm('Deseja excluir o exame?')){
-        Exame.apagar(exame).then(resposta => {
-          this.listar();
+      if (!this.exame.id) {
+        Exame.salvar(this.exame).then(resposta => {
+          this.exame = {}
+          alert('Salvo com sucesso!')
+          window.location.reload();
+          this.listar()
           this.errors = []
         }).catch(e => {
           this.errors = e.response.data.errors
-        })
-      }  
+        });
+      } else {
+        Exame.salvar(this.exame).then(resposta => {
+          this.exame = {}
+          alert('Atualizado com sucesso!')
+          window.location.reload();
+          this.listar()
+          this.errors = [];
+        }).catch(e => {
+          this.errors = e.response.data.errors;
+        });
+      }
+    },
+
+    editar(exame) {
+      this.exame = exame;
+    },
+
+    remover(exame) {
+      if (confirm('Deseja excluir o exame?')) {
+        Exame.apagar(exame).then(resposta => {
+          this.listar();
+          this.errors = [];
+        }).catch(e => {
+          this.errors = e.response.data.errors;
+        });
+      }
     },
 
     onChangeExame(data) {

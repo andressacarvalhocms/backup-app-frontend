@@ -148,7 +148,6 @@ export default {
   }),
   methods: {
     onSubmit(evt) {
-      console.log('Evt:Register');
       this.salvarCadastro();
     },
 

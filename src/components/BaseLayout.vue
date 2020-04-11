@@ -19,8 +19,8 @@
       >
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown right>
-            <a slot="button-content">{{ username }}</a>
-            <b-dropdown-item @click="$router.push({ name:'logout' })">
+            <a slot="button-content">{{ currentUser.nome }}</a>
+            <b-dropdown-item @click="logOut">
               Sair
             </b-dropdown-item>
           </b-nav-item-dropdown>
@@ -142,7 +142,7 @@
                 ><polygon points="12 2 2 7 12 12 22 7 12 2" /><polyline points="2 17 12 22 22 17" /><polyline points="2 12 12 17 22 12" /></svg>
                 Histórico de análises
               </b-nav-item>
-              
+
                <b-nav-item
                 :active="activemenu == 6"
                 @click="$router.push({ name:'monitoramento' })"
@@ -227,19 +227,25 @@ export default {
       default: 'Dr. Fulano',
       required: false
     },
-    username: {
-      type: String,
-      default: 'Sem nome',
-      required: false
-    },
     activemenu: {
       type: String,
       default: '1',
       required: false
     }
   },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
+  },
   data: () => ({
     drd: 'Dr. Fulano de Tal 2'
-  })
+  }),
+  methods: {
+    logOut() {
+      this.$store.dispatch('auth/logout');
+      this.$router.push({ name: 'logout' });
+    }
+  }
 };
 </script>

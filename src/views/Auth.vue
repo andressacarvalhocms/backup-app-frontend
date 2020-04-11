@@ -1,5 +1,5 @@
 <template>
-  <BaseLayout @submit="onSubmit">
+  <BaseLayout @submit="handleLogin">
     <b-form-group
       id="input-group-1"
       label="Email:"
@@ -7,9 +7,10 @@
     >
       <b-form-input
         id="input-1"
-        v-model="username"
+        v-model="user.username"
+        v-validate="'required'"
         type="email"
-        required
+        name="username"
         autofocus
         placeholder="Digite seu email"
       />
@@ -22,9 +23,10 @@
     >
       <b-form-input
         id="input-s"
-        v-model="password"
+        v-model="user.password"
+        v-validate="'required'"
         type="password"
-        required
+        name="password"
         placeholder="Digite sua senha"
       />
     </b-form-group>
@@ -48,43 +50,53 @@
 <script>
 // @ is an alias to /src
 import BaseLayout from '@/components/BaseLayoutLogin.vue';
-import LoginUsuario from '../services/usuario';
+import User from '../models/user';
 
 export default {
   name: 'Historico',
   components: {
     BaseLayout
   },
-  data: () => ({
-    username: '',
-    password: ''
-  }),
-  beforeMount() {
-    if (this.$router.currentRoute.name === 'logout') {
-      console.log('Evt:Logout');
-      localStorage.removeItem('jwt');
-      this.$router.push({ name: 'login' });
+  data() {
+    return {
+      user: new User('', ''),
+      loading: false,
+      message: ''
+    };
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    }
+  },
+  created() {
+    if (this.loggedIn) {
+      this.$router.push({ name: 'home' });
     }
   },
   methods: {
-    onSubmit(evt) {
-      console.log('Evt:Login');
-      this.realizarLogin();
-    },
-    realizarLogin() {
-      const body = {
-        usuario: this.username,
-        senha: this.password
-      };
-      LoginUsuario.login(body).then(resposta => {
-        const jwt = resposta.data;
-        if (jwt) {
-          localStorage.setItem('jwt', jwt);
-          this.$router.push({ name: 'home' });
+    handleLogin() {
+      this.loading = true;
+      this.$validator.validateAll().then(isValid => {
+        if (!isValid) {
+          this.loading = false;
+          return;
         }
-      }).catch(e => {
-        console.log('error ', e.response.data);
-        this.errors = e.response.data.errors;
+
+        if (this.user.username && this.user.password) {
+          this.$store.dispatch('auth/login', this.user).then(
+            () => {
+              this.$router.push({ name: 'home' });
+            },
+            error => {
+              this.loading = false;
+              this.message =
+                (error.response && error.response.data) ||
+                        error.message ||
+                        error.toString();
+            }
+          );
+        }
       });
     }
   }
