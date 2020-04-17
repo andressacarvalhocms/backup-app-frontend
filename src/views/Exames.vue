@@ -151,7 +151,7 @@ name: 'Exames',
       exame: {
         id: '',
         nome: '',
-        esultado: '',
+        resultado: '',
         dataCadastro: ''
       },
       exames: [],
