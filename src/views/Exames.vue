@@ -18,7 +18,7 @@
 
     <table class="table striped">
       <thead class="thead-light">
-        <tr >
+        <tr>
           <th scope="col">Id</th>
           <th scope="col">Nome</th>
           <th scope="col">Resultado</th>
@@ -53,10 +53,7 @@
         </tr>
       </tbody>
 </table>
-
-
     </div>
-
     <b-modal
       id="modal-adicionar-exame"
       ref="modal"
@@ -65,22 +62,23 @@
       @show="resetModal"
       @ok="handleSave"
     >
-          <form
+      <form
         ref="form"
         @submit.prevent="salvar"
-          >
+      >
         <b-form-group
           label="Nome"
           label-for="inp-nome"
         >
           <select class="form-control" id="inp-nome" v-model="exame.nome"
-            :options="form.nome_options"
-            required
-            @input="onChangeExame">
+                  :options="form.nome_options"
+                  required
+                  @input="onChangeExame">
             <option value="Pressão Arterial">Pressão Arterial, und_medida: 'mmHg' </option>
             <option value="creatinina">Creatinina, und_medida: 'mg/dL'</option>
             <option value="Uréia">Uréia, und_medida: 'mg/dL' </option>
             <option value="Albuminúria">Albuminúria, und_medida: 'mg/dL' </option>
+            <option value="Albumina">Albumina, und_medida: 'mg/dL' </option>
             <option value="Potássio">Potássio, und_medida: 'mEq/L'</option>
             <option value="TFG">TFG, und_medida: 'mL/min/1,73 m²'</option>
             <option value="Microalbuminúria">Microalbuminúria, und_medida: 'mmHg'</option>
@@ -88,60 +86,43 @@
             <option value="Glicemia pré-prandial">Glicemia pré-prandial, und_medida: 'mg/dL'</option>
             <option value="Glicemia pós-prandial">Glicemia pós-prandial, und_medida: 'mg/dL'</option>
           </select>
-
-
         </b-form-group>
 
         <b-form-group
           :label="'Valor (' + form.und_medida + ')'"
           label-for="inp-valor"
         >
-
-      <input type="text" placeholder="Resultado"  id="inp-valor"
-            v-model="exame.resultado"
-            required class="form-control">
+          <input type="text" placeholder="Resultado"  id="inp-valor"
+                 v-model="exame.resultado"
+                 required class="form-control">
         </b-form-group>
-
-
         <b-form-group
           :label="'Data do Exame'"
           label-for="inp-dataCadastro"
         >
-
-      <input type="date" placeholder="Resultado"  id="inp-dataCadastro"
-            v-model="exame.dataCadastro"
-            required class="form-control">
+          <input type="date" placeholder="Resultado"  id="inp-dataCadastro"
+                 v-model="exame.dataCadastro"
+                 required class="form-control">
         </b-form-group>
 
         <button type="submit" class="btn btn-primary" style="margin: 0 15px;"> Confirmar</button>
 
         <button type="reset" class="btn btn-danger" onClick="window.location.reload()"> Cancelar</button>
-
-
       </form>
-
-
-
     </b-modal>
   </BaseLayout>
 </template>
 
 <script>
-import Exame from '../services/exame'
+import Exame from '../services/exame';
 
 // @ is an alias to /src
 import BaseLayout from '@/components/BaseLayout.vue';
 import BaseContentTitle from '@/components/BaseContentTitle.vue';
 
-
-
 export default {
 
-  mounted(){
-    this.listar()
-  },
-
-name: 'Exames',
+  name: 'Exames',
   components: {
     BaseLayout,
     BaseContentTitle
@@ -155,26 +136,6 @@ name: 'Exames',
         dataCadastro: ''
       },
       exames: [],
-
-  /*    fields: [
-        {
-          key: 'nome',
-          sortable: true
-
-        },
-        {
-          key: 'valor',
-          sortable: false
-        },
-        {
-          key: 'data_cadastro',
-          sortable: true
-        }
-      ],
-      items: [
-        { nome: 'Presssão Arterial', valor: '120/80 mmHg', data_cadastro: '03/04/2019' }
-
-      ], */
       form: {
         exame: null,
         valor: '',
@@ -195,29 +156,31 @@ name: 'Exames',
       }
     };
   },
+  mounted() {
+    this.listar();
+  },
   methods: {
     listar() {
       Exame.listar().then(resposta => this.exames = resposta.data);
     },
 
     salvar() {
-
       if (!this.exame.id) {
         Exame.salvar(this.exame).then(resposta => {
-          this.exame = {}
-          alert('Salvo com sucesso!')
+          this.exame = {};
+          alert('Salvo com sucesso!');
           window.location.reload();
-          this.listar()
-          this.errors = []
+          this.listar();
+          this.errors = [];
         }).catch(e => {
-          this.errors = e.response.data.errors
+          this.errors = e.response.data.errors;
         });
       } else {
         Exame.salvar(this.exame).then(resposta => {
-          this.exame = {}
-          alert('Atualizado com sucesso!')
+          this.exame = {};
+          alert('Atualizado com sucesso!');
           window.location.reload();
-          this.listar()
+          this.listar();
           this.errors = [];
         }).catch(e => {
           this.errors = e.response.data.errors;
@@ -248,8 +211,7 @@ name: 'Exames',
       }
     },
     checkFormValidity() {
-      const valid = this.$refs.form.checkValidity();
-      return valid;
+      return this.$refs.form.checkValidity();
     },
     resetModal() {
       this.form.exame = null;

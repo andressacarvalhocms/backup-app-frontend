@@ -24,12 +24,12 @@
           class="d-flex align-items-center justify-content-center p-2"
         >
           <font-awesome-icon
-            v-if="success !==''"
+            v-if="success === true"
             icon="check"
             style="color:#0a0; width: 40px; height: 40px"
           />
           <font-awesome-icon
-            v-if="success === ''"
+            v-if="success === false"
             icon="exclamation-triangle"
             style="color:#ffaa00; width: 40px; height: 40px"
           />
@@ -49,8 +49,8 @@ export default {
       required: false
     },
     success: {
-      type: String,
-      default: '',
+      type: Boolean,
+      default: true,
       required: false
     }
   }

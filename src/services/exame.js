@@ -15,5 +15,9 @@ export default {
 
   apagar: (exame) => {
     return http.delete('exames', { data: exame });
-  }
+  },
+
+  obterExamesCadastrados: () => {
+    return http.get('exames-cadastrados');
+  },
 };

@@ -18,27 +18,33 @@
 
     <b-row>
       <DashboardCard
-        title="Creatina"
-        success="true"
+        title="Creatinina"
+        v-bind:success="examesCadastrados.creatinina"
       />
       <DashboardCard
         title="Ureia"
-        success="true"
+        v-bind:success="examesCadastrados.ureia"
       />
       <DashboardCard
         title="Albumina"
-        success="true"
+        v-bind:success="examesCadastrados.albumina"
       />
       <DashboardCard
         title="Potássio"
-        success="true"
+        v-bind:success="examesCadastrados.potassio"
       />
       <DashboardCard
         title="Microalbuminúria"
-        success="true"
+        v-bind:success="examesCadastrados.microalbuminuria"
       />
-      <DashboardCard title="Albuminúria" />
-      <DashboardCard title="Taxa de Filtração Glomerular (TFG)" />
+      <DashboardCard
+        title="Albuminúria"
+        v-bind:success="examesCadastrados.albuminuria"
+      />
+      <DashboardCard
+        title="Taxa de Filtração Glomerular (TFG)"
+        v-bind:success="examesCadastrados.tfg"
+      />
     </b-row>
     <b-modal
       id="modal-analise"
@@ -69,8 +75,10 @@
 import BaseLayout from '@/components/BaseLayout.vue';
 import BaseContentTitle from '@/components/BaseContentTitle.vue';
 import DashboardCard from '@/components/DashboardCard.vue';
+import Exame from '../services/exame';
 
 export default {
+
   name: 'Home',
   components: {
     BaseLayout,
@@ -80,13 +88,24 @@ export default {
   data() {
     return {
       sanalisando: true,
+      examesCadastrados: []
     };
+  },
+
+  mounted() {
+    this.obterExamesCadastradosUsuario();
   },
   methods: {
     startAnalise(evt) {
       setTimeout(() => {
         this.$bvModal.hide('modal-analise');
       }, 2000);
+    },
+
+    obterExamesCadastradosUsuario() {
+      Exame.obterExamesCadastrados().then(resposta => {
+        this.examesCadastrados = resposta.data;
+      });
     }
   }
 };
