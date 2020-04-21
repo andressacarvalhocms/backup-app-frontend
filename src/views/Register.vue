@@ -42,6 +42,50 @@
     </b-form-group>
 
     <b-form-group
+      id="input-group-14"
+      label="Diabético:"
+      label-for="input-14"
+    >
+      <b-form-radio
+        v-model="dm"
+        name="dm-radios"
+        value="F"
+        checked
+      >
+        Não
+      </b-form-radio>
+      <b-form-radio
+        v-model="dm"
+        name="dm-radios"
+        value="T"
+      >
+        Sim
+      </b-form-radio>
+    </b-form-group>
+
+    <b-form-group
+      id="input-group-15"
+      label="Hipertenso:"
+      label-for="input-15"
+    >
+      <b-form-radio
+        v-model="has"
+        name="has-radios"
+        value="F"
+        checked
+      >
+        Não
+      </b-form-radio>
+      <b-form-radio
+        v-model="has"
+        name="has-radios"
+        value="T"
+      >
+        Sim
+      </b-form-radio>
+    </b-form-group>
+
+    <b-form-group
       id="input-group-12"
       label="Idade:"
       label-for="input-12"
@@ -116,8 +160,9 @@
         variant="primary"
         class="btn btn-lg btn-primary btn-block"
         type="submit"
+        v-bind:disabled="password ==='' || password !== passwordConfirm"
       >
-        Entrar
+        Cadastrar
       </b-button>
     </b-form-group>
 
@@ -145,6 +190,8 @@ export default {
     password: '',
     weight: '',
     passwordConfirm: '',
+    dm: 'F',
+    has: 'F',
   }),
   methods: {
     onSubmit(evt) {
@@ -158,7 +205,9 @@ export default {
         senha: this.password,
         sexo: this.genre,
         login: this.username,
-        peso: this.weight
+        peso: this.weight,
+        diabetico: this.dm,
+        hipertenso: this.has
       };
       Usuario.cadastrar(body).then(resposta => {
         alert(resposta.data);

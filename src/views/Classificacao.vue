@@ -3,13 +3,13 @@
     <BaseContentTitle icon="notes-medical">
       Classificação de Risco
       <template v-slot:toolbar>
-        <b-button
-          v-b-modal="'modal-adicionar-classificacao'"
-          size="sm"
-          variant="outline-secondary"
-        >
-          <font-awesome-icon icon="plus" /> Adicionar Classificação
-        </b-button>
+<!--        <b-button-->
+<!--          v-b-modal="'modal-adicionar-classificacao'"-->
+<!--          size="sm"-->
+<!--          variant="outline-secondary"-->
+<!--        >-->
+<!--          <font-awesome-icon icon="plus" /> Adicionar Classificação-->
+<!--        </b-button>-->
       </template>
     </BaseContentTitle>
 
@@ -20,8 +20,8 @@
         fixed
         bordered
         small
-        :items="items"
-        :fields="fields"
+        :items="listaClassificacoes"
+        :fields="campos"
       />
     </div>
 
@@ -151,6 +151,7 @@
 // @ is an alias to /src
 import BaseLayout from '@/components/BaseLayout.vue';
 import BaseContentTitle from '@/components/BaseContentTitle.vue';
+import Analise from '../services/analise';
 
 export default {
   name: 'Alergias',
@@ -160,48 +161,44 @@ export default {
   },
   data() {
     return {
-      fields: [
+      listaClassificacoes: [],
+      campos: [
         {
-          key: 'DM',
+          key: 'dm',
           sortable: true
         },
         {
-          key: 'HAS',
+          key: 'has',
           sortable: true
         },
         {
-          key: 'Creatinina',
+          key: 'creatinina',
           sortable: true
         },
         {
-          key: 'Ureia',
+          key: 'ureia',
           sortable: true
         },
         {
-          key: 'Microalbuminaria',
+          key: 'microalbuminaria',
           sortable: true
         },
         {
-          key: 'Idade',
+          key: 'idade',
           sortable: true
         },
         {
-          key: 'Sexo',
+          key: 'sexo',
           sortable: true
         },
         {
-          key: 'TFG',
+          key: 'tfg',
           sortable: true
         },
         {
-          key: 'Classificação',
+          key: 'classificacao',
           sortable: true
         }
-      ],
-      items: [
-        { DM: 'T', HAS: 'F', Creatinina: '0,86', Ureia: '35,8', Microalbuminaria: '36,8', Idade: '56', Sexo: 'F', TFG: '96,9', Classificação: 'RISCO MODERADO' },
-        { DM: 'T', HAS: 'T', Creatinina: '0,54', Ureia: '25,2', Microalbuminaria: '0,6', Idade: '60', Sexo: 'F', TFG: '139,9', Classificação: 'ALTO RISCO' },
-        { DM: 'T', HAS: 'F', Creatinina: '0,81', Ureia: '33', Microalbuminaria: '77,5', Idade: '79', Sexo: 'M', TFG: '63,8', Classificação: 'RISCO MODERADO' },
       ],
       form: {
         DM: '',
@@ -209,6 +206,11 @@ export default {
         HAS: '03/04/2019'
       }
     };
+  },
+  mounted() {
+    Analise.obterAnalises().then(resposta => {
+      this.listaClassificacoes = resposta.data;
+    });
   },
   methods: {
     checkFormValidity() {

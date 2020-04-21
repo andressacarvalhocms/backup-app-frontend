@@ -12,6 +12,10 @@
         </b-button>
       </template>
     </BaseContentTitle>
+    <b-alert v-model="showDismissibleAlert" dismissible
+             @dismissed="msgAlert = ''">
+      {{msgAlert}}
+    </b-alert>
     <BaseContentTitle icon="tachometer-alt">
       Exames Atuais
     </BaseContentTitle>
@@ -25,22 +29,22 @@
         title="Ureia"
         v-bind:success="examesCadastrados.ureia"
       />
-      <DashboardCard
-        title="Albumina"
-        v-bind:success="examesCadastrados.albumina"
-      />
-      <DashboardCard
-        title="Potássio"
-        v-bind:success="examesCadastrados.potassio"
-      />
+<!--      <DashboardCard-->
+<!--        title="Albumina"-->
+<!--        v-bind:success="examesCadastrados.albumina"-->
+<!--      />-->
+<!--      <DashboardCard-->
+<!--        title="Potássio"-->
+<!--        v-bind:success="examesCadastrados.potassio"-->
+<!--      />-->
       <DashboardCard
         title="Microalbuminúria"
         v-bind:success="examesCadastrados.microalbuminuria"
       />
-      <DashboardCard
-        title="Albuminúria"
-        v-bind:success="examesCadastrados.albuminuria"
-      />
+<!--      <DashboardCard-->
+<!--        title="Albuminúria"-->
+<!--        v-bind:success="examesCadastrados.albuminuria"-->
+<!--      />-->
       <DashboardCard
         title="Taxa de Filtração Glomerular (TFG)"
         v-bind:success="examesCadastrados.tfg"
@@ -76,6 +80,7 @@ import BaseLayout from '@/components/BaseLayout.vue';
 import BaseContentTitle from '@/components/BaseContentTitle.vue';
 import DashboardCard from '@/components/DashboardCard.vue';
 import Exame from '../services/exame';
+import Analise from '../services/analise';
 
 export default {
 
@@ -88,7 +93,9 @@ export default {
   data() {
     return {
       sanalisando: true,
-      examesCadastrados: []
+      examesCadastrados: [],
+      showDismissibleAlert: false,
+      msgAlert: ''
     };
   },
 
@@ -97,8 +104,14 @@ export default {
   },
   methods: {
     startAnalise(evt) {
+      this.msgAlert = '';
+      this.showDismissibleAlert = false;
+      Analise.realizarAnalise().then(resposta => {
+        this.msgAlert = 'Resultado da Análise: ' + resposta.data.classificacao;
+      });
       setTimeout(() => {
         this.$bvModal.hide('modal-analise');
+        this.showDismissibleAlert = true;
       }, 2000);
     },
 
